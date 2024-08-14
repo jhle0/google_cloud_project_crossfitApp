@@ -232,31 +232,6 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ],
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: IconButton(
-                        icon: const Icon(Icons.logout, color: Colors.white),
-                        onPressed: () async {
-                          await FirebaseAuth.instance.signOut();
-                          await GoogleSignIn().signOut();
-
-                          // 로그아웃 후 로그인 화면으로 이동
-                          if (context.mounted) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginScreen(),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),

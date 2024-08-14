@@ -7,8 +7,11 @@ class SelectWeightHeightScreen extends StatefulWidget {
   final String selectedGender;
   final int selectedAge;
 
-  const SelectWeightHeightScreen(
-      {required this.selectedGender, required this.selectedAge, super.key});
+  const SelectWeightHeightScreen({
+    required this.selectedGender,
+    required this.selectedAge,
+    super.key,
+  });
 
   @override
   _SelectWeightHeightScreenState createState() =>
@@ -48,47 +51,17 @@ class _SelectWeightHeightScreenState extends State<SelectWeightHeightScreen> {
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             const SizedBox(height: 30),
-            const Text(
-              '몸무게 입력',
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            Slider(
-              value: _weight,
-              min: 30,
-              max: 150,
-              divisions: 120,
-              label: '$_weight kg',
-              onChanged: (value) {
-                setState(() {
-                  _weight = value;
-                });
-              },
-            ),
-            Text(
-              '${_weight.toStringAsFixed(1)} kg',
-              style: const TextStyle(color: Colors.white, fontSize: 20),
-            ),
+            _buildDial('몸무게 입력', _weight, 30, 150, 'kg', (value) {
+              setState(() {
+                _weight = value;
+              });
+            }),
             const SizedBox(height: 30),
-            const Text(
-              '키 입력',
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            Slider(
-              value: _height,
-              min: 100,
-              max: 250,
-              divisions: 150,
-              label: '$_height cm',
-              onChanged: (value) {
-                setState(() {
-                  _height = value;
-                });
-              },
-            ),
-            Text(
-              '${_height.toStringAsFixed(1)} cm',
-              style: const TextStyle(color: Colors.white, fontSize: 20),
-            ),
+            _buildDial('키 입력', _height, 100, 250, 'cm', (value) {
+              setState(() {
+                _height = value;
+              });
+            }),
             const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () async {
@@ -116,6 +89,65 @@ class _SelectWeightHeightScreenState extends State<SelectWeightHeightScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildDial(
+    String label,
+    double currentValue,
+    double min,
+    double max,
+    String unit,
+    ValueChanged<double> onChanged,
+  ) {
+    return Column(
+      children: [
+        Text(
+          '${currentValue.toStringAsFixed(1)}$unit',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+          ),
+        ),
+        SizedBox(
+          height: 100,
+          child: ListWheelScrollView.useDelegate(
+            controller: FixedExtentScrollController(
+              initialItem: (currentValue - min).toInt(),
+            ),
+            itemExtent: 50,
+            physics: const FixedExtentScrollPhysics(),
+            onSelectedItemChanged: (index) {
+              onChanged(min + index);
+            },
+            childDelegate: ListWheelChildBuilderDelegate(
+              builder: (context, index) {
+                return Center(
+                  child: Text(
+                    '${(min + index).toStringAsFixed(1)}$unit',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: currentValue == min + index
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
+                  ),
+                );
+              },
+              childCount: (max - min + 1).toInt(),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+      ],
     );
   }
 }

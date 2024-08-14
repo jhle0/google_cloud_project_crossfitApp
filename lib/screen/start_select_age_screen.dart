@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_cloud_project/screen/start_select_weight_height_screen.dart';
 
-
 class SelectAgeScreen extends StatefulWidget {
   final String selectedGender;
 
@@ -14,7 +13,7 @@ class SelectAgeScreen extends StatefulWidget {
 }
 
 class _SelectAgeScreenState extends State<SelectAgeScreen> {
-  int selectedAge = 20;
+  int selectedAge = 20; // 초기 설정을 20으로 시작
 
   Future<void> _saveAge() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -35,6 +34,55 @@ class _SelectAgeScreenState extends State<SelectAgeScreen> {
         title: const Text('나이 선택'),
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60.0), // 원래 코드로 되돌림
+          child: Column(
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '나이선택',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(
+                    '70%',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+              SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  trackHeight: 4.0,
+                  thumbShape:
+                      const RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                  overlayShape:
+                      const RoundSliderOverlayShape(overlayRadius: 16.0),
+                ),
+                child: Slider(
+                  value: 70, // 현재 화면이 70%임을 나타내는 값
+                  min: 0,
+                  max: 100,
+                  onChanged: (double value) {},
+                  activeColor: Colors.blue,
+                  inactiveColor: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: Center(
         child: Column(
@@ -45,24 +93,32 @@ class _SelectAgeScreenState extends State<SelectAgeScreen> {
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             const SizedBox(height: 30),
-            SizedBox(
-              height: 100,
+            Expanded(
               child: ListWheelScrollView.useDelegate(
-                itemExtent: 50,
-                perspective: 0.005,
+                itemExtent: 100,
+                perspective: 0.003,
                 physics: const FixedExtentScrollPhysics(),
                 onSelectedItemChanged: (index) {
-                  selectedAge = index + 1;
+                  setState(() {
+                    selectedAge = index + 1;
+                  });
                 },
+                controller: FixedExtentScrollController(
+                    initialItem: 19), // 20이 선택된 상태로 시작
                 childDelegate: ListWheelChildLoopingListDelegate(
                   children: List<Widget>.generate(
                     100,
                     (index) => Center(
                       child: Text(
                         '${index + 1}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
+                        style: TextStyle(
+                          color: index + 1 == selectedAge
+                              ? Colors.blue
+                              : Colors.white,
+                          fontSize: 50,
+                          fontWeight: index + 1 == selectedAge
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                         ),
                       ),
                     ),
@@ -77,9 +133,11 @@ class _SelectAgeScreenState extends State<SelectAgeScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SelectWeightHeightScreen(
-                          selectedGender: widget.selectedGender,
-                          selectedAge: selectedAge)),
+                    builder: (context) => SelectWeightHeightScreen(
+                      selectedGender: widget.selectedGender,
+                      selectedAge: selectedAge,
+                    ),
+                  ),
                 );
               },
               style: ElevatedButton.styleFrom(

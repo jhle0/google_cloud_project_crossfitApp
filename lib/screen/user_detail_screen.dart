@@ -2,8 +2,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart'; // Firebase Storage import
-import 'package:image_picker/image_picker.dart'; // Image Picker import
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'login_screen.dart';
 
 class UserDetailScreen extends StatefulWidget {
   const UserDetailScreen({super.key});
@@ -23,7 +26,7 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
           .collection('users')
           .doc(user.uid)
           .get();
-      return doc.data(); // Map<String, dynamic>? 반환
+      return doc.data();
     }
     return null;
   }
@@ -31,10 +34,8 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
   Future<void> _uploadImage() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null && _image != null) {
-      final storageRef = FirebaseStorage.instance
-          .ref()
-          .child('user_photos')
-          .child(user.uid); // 오류 해결
+      final storageRef =
+          FirebaseStorage.instance.ref().child('user_photos').child(user.uid);
       await storageRef.putFile(_image!);
 
       final imageUrl = await storageRef.getDownloadURL();
@@ -88,6 +89,24 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
             Navigator.of(context).pop();
           },
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              await GoogleSignIn().signOut();
+
+              if (context.mounted) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreen(),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<Map<String, dynamic>?>(
         future: _getUserDetails(),
