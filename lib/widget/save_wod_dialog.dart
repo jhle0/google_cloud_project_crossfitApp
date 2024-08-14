@@ -1,70 +1,60 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class SaveWodDialog extends StatefulWidget {
-  const SaveWodDialog({super.key});
+class SaveWodDialog extends StatelessWidget {
+  final List<Map<String, String>> currentWod; // 사용자 추가 WOD 리스트를 받기 위한 파라미터
 
-  @override
-  _SaveWodDialogState createState() => _SaveWodDialogState();
-}
-
-class _SaveWodDialogState extends State<SaveWodDialog> {
-  late TextEditingController _wodNameController;
-  late TextEditingController _wodDescriptionController;
-
-  @override
-  void initState() {
-    super.initState();
-    _wodNameController = TextEditingController();
-    _wodDescriptionController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _wodNameController.dispose();
-    _wodDescriptionController.dispose();
-    super.dispose();
-  }
+  const SaveWodDialog({super.key, required this.currentWod});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController descriptionController = TextEditingController();
+
     return AlertDialog(
-      backgroundColor: Colors.black,
-      title: const Text("Save WOD", style: TextStyle(color: Colors.white)),
+      title: const Text('Save WOD'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
-            controller: _wodNameController,
-            style: const TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-              labelText: "WOD Name",
-              labelStyle: TextStyle(color: Colors.white),
-            ),
+            controller: nameController,
+            decoration: const InputDecoration(hintText: 'WOD Name'),
           ),
-          const SizedBox(height: 8),
           TextField(
-            controller: _wodDescriptionController,
-            style: const TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-              labelText: "WOD Description",
-              labelStyle: TextStyle(color: Colors.white),
-            ),
+            controller: descriptionController,
+            decoration: const InputDecoration(hintText: 'WOD Description'),
           ),
         ],
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text("Cancel", style: TextStyle(color: Colors.white)),
-        ),
-        TextButton(
           onPressed: () {
-            Navigator.of(context).pop({
-              'wodName': _wodNameController.text,
-              'wodDescription': _wodDescriptionController.text,
-            });
+            Navigator.of(context).pop();
           },
-          child: const Text("Save", style: TextStyle(color: Colors.white)),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            String wodName = nameController.text;
+            String wodDescription = descriptionController.text;
+
+            if (wodName.isNotEmpty && wodDescription.isNotEmpty) {
+              // Firestore에 데이터 저장
+              await FirebaseFirestore.instance.collection('wods').add({
+                'name': wodName,
+                'description': wodDescription,
+                'date': DateTime.now(),
+                'wods': currentWod, // 사용자 추가 WOD 데이터도 함께 저장
+              });
+
+              Navigator.of(context).pop(<String, dynamic>{
+                'wodName': wodName,
+                'wodDescription': wodDescription,
+                'wods': currentWod,
+              });
+            }
+          },
+          child: const Text('Save'),
         ),
       ],
     );

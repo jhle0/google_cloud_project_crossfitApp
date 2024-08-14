@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_cloud_project/widget/edit_wod_dialog.dart';
 // import 'package:google_cloud_project/widget/filter_buttons.dart';
@@ -26,6 +27,31 @@ class WodScreenState extends State<WodScreen> {
     Color(0xFF27383E),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchSavedWods(); // Firestore에서 저장된 WOD 데이터를 가져옴
+  }
+
+  void _fetchSavedWods() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('wods').get();
+
+    setState(() {
+      savedWods = querySnapshot.docs.map((doc) {
+        return {
+          'date': doc['date'].toDate(),
+          'wodName': doc['name'],
+          'wodDescription': doc['description'],
+          'wods': (doc['wods'] as List<dynamic>).map((item) {
+            return Map<String, String>.from(item as Map);
+          }).toList(),
+        };
+      }).toList();
+    });
+  }
+
+
   void _onTodayPressed() {
     setState(() {
       showAllWods = false;
@@ -33,6 +59,7 @@ class WodScreenState extends State<WodScreen> {
   }
 
   void _onAllPressed() {
+    _fetchSavedWods(); // All 버튼을 눌렀을 때 Firestore에서 데이터를 다시 가져옴
     setState(() {
       showAllWods = true;
     });
@@ -59,9 +86,11 @@ class WodScreenState extends State<WodScreen> {
 
   void _saveWod() async {
     if (currentWod.isNotEmpty) {
-      final Map<String, String>? result = await showDialog<Map<String, String>>(
+      final Map<String, dynamic>? result =
+          await showDialog<Map<String, dynamic>>(
         context: context,
-        builder: (context) => const SaveWodDialog(), // Save WOD 다이얼로그 표시
+        builder: (context) =>
+            SaveWodDialog(currentWod: currentWod), // currentWod 전달
       );
 
       if (result != null &&
@@ -72,7 +101,7 @@ class WodScreenState extends State<WodScreen> {
             'date': DateTime.now(),
             'wodName': result['wodName']!,
             'wodDescription': result['wodDescription']!,
-            'wods': List<Map<String, String>>.from(currentWod),
+            'wods': List<Map<String, String>>.from(result['wods']),
           });
           currentWod.clear();
         });
