@@ -81,6 +81,13 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 23, 23, 27),
         title: const Text('사용자 정보'),
+        leading: IconButton(
+          color: Colors.white,
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: FutureBuilder<Map<String, dynamic>?>(
         future: _getUserDetails(),

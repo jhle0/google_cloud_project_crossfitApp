@@ -96,7 +96,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_cloud_project/service/login_screen.dart';
+import 'package:google_cloud_project/screen/login_screen.dart';
 import 'package:google_cloud_project/screen/user_detail_screen.dart';
 
 class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {

@@ -96,7 +96,7 @@ import 'package:google_cloud_project/screen/start_select_gender_screen.dart';
 import 'package:google_cloud_project/screen/wod_screen.dart';
 import 'package:google_cloud_project/screen/workout_history_screen.dart';
 import 'package:google_cloud_project/screen/workout_screen.dart';
-import 'package:google_cloud_project/service/login_screen.dart';
+import 'package:google_cloud_project/screen/login_screen.dart';
 import 'package:google_cloud_project/widget/app_bar_widget.dart';
 
 void main() async {
