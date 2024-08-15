@@ -29,12 +29,10 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
       backgroundColor: const Color.fromARGB(255, 23, 23, 27),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 23, 23, 27),
-        title: const Text('성별 선택'),
-        centerTitle: true,
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,20 +41,28 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
             Column(
               children: [
                 const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    SizedBox(
+                      width: 20,
+                    ),
                     Text(
                       '성별선택',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
                       ),
+                    ),
+                    SizedBox(
+                      width: 57,
                     ),
                     Text(
                       '35%',
                       style: TextStyle(
                         color: Colors.blue,
                         fontSize: 16,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
@@ -65,7 +71,7 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                   data: SliderTheme.of(context).copyWith(
                     trackHeight: 4.0,
                     thumbShape:
-                        const RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                        const RoundSliderThumbShape(enabledThumbRadius: 8.0),
                     overlayShape:
                         const RoundSliderOverlayShape(overlayRadius: 16.0),
                   ),
@@ -80,13 +86,16 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 130),
+            const SizedBox(height: 40),
             const Text(
               '성별을 선택해주세요.',
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w900),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 50),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -99,17 +108,29 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                   child: Column(
                     children: [
                       CircleAvatar(
-                        radius: 50,
+                        radius: 80,
                         backgroundColor:
                             selectedGender == '남' ? Colors.blue : Colors.grey,
-                        child: const Icon(Icons.male,
-                            size: 50, color: Colors.white),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.male,
+                              size: 80,
+                              color: Colors.white,
+                            ), // Adds some space between the icon and text
+                            Text(
+                              'Male',
+                              style: TextStyle(
+                                fontSize: 20, // Adjust the font size as needed
+                                color: Colors
+                                    .white, // Set the text color to white for visibility
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'Male',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
                     ],
                   ),
                 ),
@@ -125,16 +146,30 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                   child: Column(
                     children: [
                       CircleAvatar(
-                        radius: 50,
+                        radius: 80,
                         backgroundColor:
                             selectedGender == '여' ? Colors.blue : Colors.grey,
-                        child: const Icon(Icons.female,
-                            size: 50, color: Colors.white),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Female',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.female,
+                              size: 80,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                                height:
+                                    10), // Adds some space between the icon and text
+                            Text(
+                              'Female',
+                              style: TextStyle(
+                                fontSize: 20, // Adjust the font size as needed
+                                color: Colors
+                                    .white, // Set the text color to white for visibility
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -160,10 +195,16 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                     selectedGender != null ? Colors.blue : Colors.grey,
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: const Text('다음 1/4 »'),
+              child: const Text(
+                '다음 1/4  »',
+                style: TextStyle(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700),
+              ),
             ),
           ],
         ),

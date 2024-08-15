@@ -38,53 +38,142 @@ class _SelectWeightHeightScreenState extends State<SelectWeightHeightScreen> {
       backgroundColor: const Color.fromARGB(255, 23, 23, 27),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 23, 23, 27),
-        title: const Text('키와 몸무게 선택'),
-        centerTitle: true,
-        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              '키와 몸무게를 입력해주세요.',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            const SizedBox(height: 30),
-            _buildDial('몸무게 입력', _weight, 30, 150, 'kg', (value) {
-              setState(() {
-                _weight = value;
-              });
-            }),
-            const SizedBox(height: 30),
-            _buildDial('키 입력', _height, 100, 250, 'cm', (value) {
-              setState(() {
-                _height = value;
-              });
-            }),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () async {
-                await _saveWeightHeight();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserNameScreen(
-                        selectedGender: widget.selectedGender,
-                        selectedAge: widget.selectedAge,
-                        selectedWeight: _weight,
-                        selectedHeight: _height),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+            // Progress Slider
+            Column(
+              children: [
+                const Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Text(
+                      '키 몸무게 선택',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 220,
+                    ),
+                    Text(
+                      '95%',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
+                SliderTheme(
+                  data: SliderTheme.of(context).copyWith(
+                    trackHeight: 4.0,
+                    thumbShape:
+                        const RoundSliderThumbShape(enabledThumbRadius: 8.0),
+                    overlayShape:
+                        const RoundSliderOverlayShape(overlayRadius: 16.0),
+                  ),
+                  child: Slider(
+                    value: 90,
+                    min: 0,
+                    max: 100,
+                    onChanged: (double value) {},
+                    activeColor: Colors.blue,
+                    inactiveColor: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    '키와 몸무게를 입력해주세요.',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 80),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        child: _buildDial('몸무게 입력', _weight, 30, 150, 'kg',
+                            (value) {
+                          setState(() {
+                            _weight = value;
+                          });
+                        }),
+                      ),
+                      const SizedBox(width: 20), // 여유 공간 추가
+                      Expanded(
+                        child: _buildDial('키 입력', _height, 100, 250, 'cm',
+                            (value) {
+                          setState(() {
+                            _height = value;
+                          });
+                        }),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 150),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await _saveWeightHeight();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserNameScreen(
+                            selectedGender: widget.selectedGender,
+                            selectedAge: widget.selectedAge,
+                            selectedWeight: _weight,
+                            selectedHeight: _height,
+                          ),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: const Text(
+                      '다음 3/4 »',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ],
               ),
-              child: const Text('다음 3/4 »'),
             ),
           ],
         ),
@@ -106,11 +195,14 @@ class _SelectWeightHeightScreenState extends State<SelectWeightHeightScreen> {
           '${currentValue.toStringAsFixed(1)}$unit',
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 28,
           ),
         ),
+        const SizedBox(
+          height: 20,
+        ),
         SizedBox(
-          height: 100,
+          height: 240,
           child: ListWheelScrollView.useDelegate(
             controller: FixedExtentScrollController(
               initialItem: (currentValue - min).toInt(),
@@ -126,8 +218,10 @@ class _SelectWeightHeightScreenState extends State<SelectWeightHeightScreen> {
                   child: Text(
                     '${(min + index).toStringAsFixed(1)}$unit',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
+                      color: currentValue == min + index
+                          ? Colors.blue
+                          : Colors.white,
+                      fontSize: currentValue == min + index ? 22 : 20,
                       fontWeight: currentValue == min + index
                           ? FontWeight.bold
                           : FontWeight.normal,
@@ -137,14 +231,6 @@ class _SelectWeightHeightScreenState extends State<SelectWeightHeightScreen> {
               },
               childCount: (max - min + 1).toInt(),
             ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
           ),
         ),
       ],

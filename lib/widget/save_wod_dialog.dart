@@ -44,7 +44,7 @@ class SaveWodDialog extends StatelessWidget {
                 'name': wodName,
                 'description': wodDescription,
                 'date': DateTime.now(),
-                'wods': currentWod, // 사용자 추가 WOD 데이터도 함께 저장
+                'wods': currentWod,
               });
 
               Navigator.of(context).pop(<String, dynamic>{

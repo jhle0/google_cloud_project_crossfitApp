@@ -42,9 +42,15 @@ class _UserNameScreenState extends State<UserNameScreen> {
       backgroundColor: const Color.fromARGB(255, 23, 23, 27),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 23, 23, 27),
-        title: const Text('사용자 이름 입력'),
-        centerTitle: true,
-        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Center(
         child: Padding(
@@ -54,9 +60,12 @@ class _UserNameScreenState extends State<UserNameScreen> {
             children: [
               const Text(
                 '이름을 입력해주세요.',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w900),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 50),
               TextField(
                 controller: _nameController,
                 style: const TextStyle(color: Colors.white),
@@ -84,10 +93,16 @@ class _UserNameScreenState extends State<UserNameScreen> {
                   backgroundColor: Colors.blue,
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child: const Text('완료'),
+                child: const Text(
+                  '완료',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700),
+                ),
               ),
             ],
           ),
