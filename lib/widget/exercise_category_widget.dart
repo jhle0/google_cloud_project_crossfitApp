@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 
-import 'package:google_cloud_project/screen/airsquat_screen.dart';
-import 'package:google_cloud_project/screen/frontsquat_screen.dart';
+import 'package:google_cloud_project/screen/basic_airsquat_screen.dart';
+import 'package:google_cloud_project/screen/basic_deadlift_screen.dart';
+import 'package:google_cloud_project/screen/basic_frontsquat_screen.dart';
+import 'package:google_cloud_project/screen/basic_jerk_press_screen.dart';
+import 'package:google_cloud_project/screen/basic_medicine_ball_screen.dart';
+import 'package:google_cloud_project/screen/basic_overhead_squats_screen.dart';
+import 'package:google_cloud_project/screen/basic_push_press_screen.dart';
+import 'package:google_cloud_project/screen/basic_shoulder_press_screen.dart';
+import 'package:google_cloud_project/screen/basic_sumo_deadlift_screen.dart';
 
 class ExerciseCategory extends StatelessWidget {
   final String title;
@@ -62,6 +69,55 @@ class ExerciseCategory extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => const FrontSquatPage(),
+                      ),
+                    );
+                  } else if (exercises[index]['name'] == '  오버헤드 \n  스쿼트') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const OverheadSquatsPage(),
+                      ),
+                    );
+                  } else if (exercises[index]['name'] == '   숄더 \n    프레스') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ShoulderPressPage(),
+                      ),
+                    );
+                  } else if (exercises[index]['name'] == '   푸쉬 \n    프레스') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PushPressPage(),
+                      ),
+                    );
+                  } else if (exercises[index]['name'] == '    저크 \n    프레스') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const JerkPressPage(),
+                      ),
+                    );
+                  } else if (exercises[index]['name'] == '   데드\n    리프트') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DeadliftPage(),
+                      ),
+                    );
+                  } else if (exercises[index]['name'] == '스모 \n 데드리프트') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SumoDeadliftPage(),
+                      ),
+                    );
+                  } else if (exercises[index]['name'] == '  메디신볼 \n클린') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MedicineBallPage(),
                       ),
                     );
                   }

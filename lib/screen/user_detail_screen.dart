@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'login_screen.dart';
 
 class UserDetailScreen extends StatefulWidget {
@@ -18,6 +17,11 @@ class UserDetailScreen extends StatefulWidget {
 class _UserDetailScreenState extends State<UserDetailScreen> {
   File? _image;
   String? _imageUrl;
+  final _nameController = TextEditingController();
+  final _genderController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _weightController = TextEditingController();
+  final _heightController = TextEditingController();
 
   Future<Map<String, dynamic>?> _getUserDetails() async {
     final user = FirebaseAuth.instance.currentUser;
@@ -69,10 +73,41 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
     }
   }
 
+  Future<void> _saveUserDetails() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({
+        'name': _nameController.text.trim(),
+        'gender': _genderController.text.trim(),
+        'age': int.tryParse(_ageController.text.trim()) ?? 0,
+        'weight': double.tryParse(_weightController.text.trim()) ?? 0.0,
+        'height': double.tryParse(_heightController.text.trim()) ?? 0.0,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('사용자 정보가 업데이트되었습니다.')),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _getUserDetails();
+    _getUserDetails().then((userDetails) {
+      if (userDetails != null) {
+        _nameController.text = userDetails['name'] ?? '';
+        _genderController.text = userDetails['gender'] ?? '';
+        _ageController.text = userDetails['age']?.toString() ?? '';
+        _weightController.text = userDetails['weight']?.toString() ?? '';
+        _heightController.text = userDetails['height']?.toString() ?? '';
+        setState(() {
+          _imageUrl = userDetails['photoUrl'];
+        });
+      }
+    });
   }
 
   @override
@@ -119,11 +154,9 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
             return const Center(child: Text('사용자 정보를 불러올 수 없습니다.'));
           }
 
-          final userDetails = snapshot.data!;
           return Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: [
                 const Text(
                   '사용자 정보',
@@ -149,34 +182,55 @@ class _UserDetailScreenState extends State<UserDetailScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  '이름: ${userDetails['name']}',
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
+                _buildTextField('이름', _nameController),
                 const SizedBox(height: 10),
-                Text(
-                  '성별: ${userDetails['gender']}',
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
+                _buildTextField('성별', _genderController),
                 const SizedBox(height: 10),
-                Text(
-                  '나이: ${userDetails['age']}',
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
+                _buildTextField('나이', _ageController, isNumeric: true),
                 const SizedBox(height: 10),
-                Text(
-                  '몸무게: ${userDetails['weight']} kg',
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
+                _buildTextField('몸무게 (kg)', _weightController, isNumeric: true),
                 const SizedBox(height: 10),
-                Text(
-                  '키: ${userDetails['height']} cm',
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                _buildTextField('키 (cm)', _heightController, isNumeric: true),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _saveUserDetails,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text('정보 저장', style: TextStyle(fontSize: 18)),
                 ),
               ],
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildTextField(String label, TextEditingController controller,
+      {bool isNumeric = false}) {
+    return TextFormField(
+      controller: controller,
+      style: const TextStyle(color: Colors.white),
+      keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.white70),
+        filled: true,
+        fillColor: Colors.black54,
+        border: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 1),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white70, width: 1),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2),
+        ),
       ),
     );
   }
