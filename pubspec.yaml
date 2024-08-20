@@ -84,6 +84,12 @@ flutter:
     - assets/airsquat-ex.png
     - assets/crossfit_challenge.jpeg
     - assets/google_logo.png
+    - assets/deadlift.jpg
+    - assets/jerkpress.jpg
+    - assets/medicineball.jpg
+    - assets/overhead_squat.jpg
+    - assets/pushpress.jpg
+    - assets/shoulderpress.jpg
 
 
   #   - images/a_dot_ham.jpeg

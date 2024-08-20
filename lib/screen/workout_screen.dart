@@ -75,25 +75,25 @@ class WorkoutCategoryScreen extends StatelessWidget {
               const ExerciseCategory(
                 title: '프레스',
                 exercises: [
-                  {'name': '   숄더 \n    프레스', 'image': 'assets/back-squat.jpg'},
-                  {'name': '   푸쉬 \n    프레스', 'image': 'assets/pull-up.jpg'},
-                  {
-                    'name': '    저크 \n    프레스',
-                    'image': 'assets/back-squat.jpg'
-                  },
+                  {'name': '   숄더 \n    프레스', 'image': 'assets/pull-up.jpg'},
+                  {'name': '   푸쉬 \n    프레스', 'image': 'assets/pushpress.jpg'},
+                  {'name': '    저크 \n    프레스', 'image': 'assets/jerkpress.jpg'},
                 ],
               ),
               const ExerciseCategory(
                 title: '데드 리프트',
                 exercises: [
-                  {'name': '   데드\n    리프트', 'image': 'assets/back-squat.jpg'},
-                  {'name': '스모 \n 데드리프트', 'image': 'assets/back-squat.jpg'},
+                  {'name': '   데드\n    리프트', 'image': 'assets/deadlift.jpg'},
+                  {
+                    'name': '스모 \n 데드리프트',
+                    'image': 'assets/kettlebell-squat.jpg'
+                  },
                 ],
               ),
               const ExerciseCategory(
                 title: '클린',
                 exercises: [
-                  {'name': '  메디신볼 \n클린', 'image': 'assets/back-squat.jpg'},
+                  {'name': '  메디신볼 \n클린', 'image': 'assets/medicineball.jpg'},
                 ],
               ),
             ],
