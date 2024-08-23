@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
-class AirSquatPage extends StatefulWidget {
-  const AirSquatPage({super.key});
+import 'front_squat_settings.dart';
+
+class FrontSquatPage extends StatefulWidget {
+  const FrontSquatPage({super.key});
 
   @override
-  State<AirSquatPage> createState() => _AirSquatPageState();
+  State<FrontSquatPage> createState() => _FrontSquatPageState();
 }
 
-class _AirSquatPageState extends State<AirSquatPage> {
+class _FrontSquatPageState extends State<FrontSquatPage> {
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +41,7 @@ class _AirSquatPageState extends State<AirSquatPage> {
                 text: const TextSpan(
                   children: [
                     TextSpan(
-                      text: '에어',
+                      text: '프론트',
                       style: TextStyle(
                         color: Color.fromARGB(255, 99, 180, 254),
                         fontSize: 35,
@@ -76,8 +79,6 @@ class _AirSquatPageState extends State<AirSquatPage> {
                     title: Text(
                       '허리의 아치 형태를 유지한다.',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 227, 227, 227),
                       ),
                     ),
@@ -87,8 +88,6 @@ class _AirSquatPageState extends State<AirSquatPage> {
                     title: Text(
                       '정면을 응시한다',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 227, 227, 227),
                       ),
                     ),
@@ -98,8 +97,6 @@ class _AirSquatPageState extends State<AirSquatPage> {
                     title: Text(
                       '뒤꿈치에 체중을 실은 상태로 유지한다',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 227, 227, 227),
                       ),
                     ),
@@ -109,8 +106,6 @@ class _AirSquatPageState extends State<AirSquatPage> {
                     title: Text(
                       '완전한 가동범위에 도달한다(즉, 수평선 밑)',
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 227, 227, 227),
                       ),
                     ),
@@ -120,8 +115,6 @@ class _AirSquatPageState extends State<AirSquatPage> {
                     title: Text(
                       '가슴을 높은 상태로 유지한다',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 227, 227, 227),
                       ),
                     ),
@@ -131,8 +124,6 @@ class _AirSquatPageState extends State<AirSquatPage> {
                     title: Text(
                       '체간을 팽팽하게 유지한다',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 227, 227, 227),
                       ),
                     ),
@@ -142,8 +133,6 @@ class _AirSquatPageState extends State<AirSquatPage> {
                     title: Text(
                       '무릎이 발 안쪽으로 모임',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 227, 227, 227),
                       ),
                     ),
@@ -153,8 +142,6 @@ class _AirSquatPageState extends State<AirSquatPage> {
                     title: Text(
                       '뒤꿈치가 바닥에서 떨어짐',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 227, 227, 227),
                       ),
                     ),
@@ -164,8 +151,6 @@ class _AirSquatPageState extends State<AirSquatPage> {
                     title: Text(
                       '요추 신전 상실 (등이 휘어짐, 가장 잘못된 자세)',
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
                         color: Color.fromARGB(255, 227, 227, 227),
                       ),
                     ),
@@ -176,14 +161,19 @@ class _AirSquatPageState extends State<AirSquatPage> {
             const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  // 시작 버튼 눌렀을 때의 동작을 정의합니다.
+                onPressed: (){
+                  setState(() {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context)=> const frontSquatSettings())
+                    );
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 90, vertical: 16),
+                  const EdgeInsets.symmetric(horizontal: 90, vertical: 16),
                   backgroundColor:
-                      const Color.fromARGB(255, 99, 180, 254), // 버튼 배경색
+                  const Color.fromARGB(255, 99, 180, 254), // 버튼 배경색
                   textStyle: const TextStyle(
                     color: Color.fromARGB(255, 227, 227, 227),
                     fontSize: 18,
@@ -209,3 +199,4 @@ class _AirSquatPageState extends State<AirSquatPage> {
     );
   }
 }
+

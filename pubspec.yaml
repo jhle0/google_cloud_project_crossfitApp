@@ -44,6 +44,18 @@ dependencies:
   firebase_storage: ^11.2.2
   shared_preferences: ^2.0.12
 
+  camera: ^0.10.0
+  google_mlkit_pose_detection: ^0.12.0
+  google_mlkit_commons: ^0.7.1
+  intl: 0.19.0
+  csv: ^6.0.0
+  json_annotation: ^4.7.0
+  json_serializable: ^6.5.4
+  googleapis_auth: ^1.6.0
+  googleapis: ^13.0.0
+  dio: ^5.0.0
+  permission_handler: ^11.0.0
+
   # flutter_native_splash: ^2.4.1   # splash_screen 
 
 
@@ -90,6 +102,8 @@ flutter:
     - assets/overhead_squat.jpg
     - assets/pushpress.jpg
     - assets/shoulderpress.jpg
+    - assets/크로스핏뉴스.jpeg
+    
 
 
   #   - images/a_dot_ham.jpeg

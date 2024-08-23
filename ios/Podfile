@@ -1,11 +1,10 @@
-# Uncomment this line to define a global platform for your project
-platform :ios, '13.0'
+# 글로벌 iOS 플랫폼 버전 설정
+platform :ios, '14.0'
 
-
-
-# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
+# CocoaPods 분석 비활성화
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
+# 프로젝트 설정
 project 'Runner', {
   'Debug' => :debug,
   'Profile' => :release,
@@ -29,14 +28,21 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 
 flutter_ios_podfile_setup
 
+# 기본 Runner 타겟 설정
 target 'Runner' do
   use_frameworks!
   use_modular_headers!
 
-  # Override Firebase SDK Version
+  # Firebase SDK 버전 설정
   $FirebaseSDKVersion = '10.22.0'
 
+  # 필요한 Pod 의존성 추가
+  pod 'GTMSessionFetcher/Core', '~> 3.3'  # MLKit과 호환되는 버전으로 설정
+  pod 'GoogleSignIn', '~> 7.1'  # GoogleSignIn의 버전 설정
+  pod 'GoogleMLKit/PoseDetection', '~> 6.0.0'  # MLKit PoseDetection 의존성 추가
+
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
   target 'RunnerTests' do
     inherit! :search_paths
   end
